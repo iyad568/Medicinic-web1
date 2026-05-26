@@ -3,9 +3,9 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sess
 from sqlalchemy.ext.declarative import declarative_base
 
 # Use DATABASE_URL env var in production, fallback to local for development
-_db_url = os.environ.get("DATABASE_URL", "postgresql+asyncpg://postgres:iyad1212@localhost:5432/mediclinic")
-# Render provides postgresql:// but asyncpg requires postgresql+asyncpg://
-DATABASE_URL = _db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+_db_url = os.environ.get("DATABASE_URL", "postgresql+psycopg://postgres:iyad1212@localhost:5432/mediclinic")
+# Render provides postgresql:// — switch to psycopg async driver
+DATABASE_URL = _db_url.replace("postgresql://", "postgresql+psycopg://", 1).replace("postgresql+asyncpg://", "postgresql+psycopg://", 1)
 
 engine = create_async_engine(DATABASE_URL, echo=True)
 AsyncSessionLocal = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
